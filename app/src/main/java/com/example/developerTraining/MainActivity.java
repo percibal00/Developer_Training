@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 2. Referenciar los elementos de la vista (UI)
         etEmail = findViewById(R.id.etEmail);
-        etPassword = findViewById(R.id.etPassword);
+        etPassword = findViewById(R.id.etConfirm);
         btnLogin = findViewById(R.id.btnLogin);
         tvRegister = findViewById(R.id.tvRegister);
 
