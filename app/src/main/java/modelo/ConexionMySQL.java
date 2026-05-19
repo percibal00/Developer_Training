@@ -58,7 +58,7 @@ private static final String URL =
             e.printStackTrace();
         } finally {
             try {
-                conn.close();
+                if (conn != null) conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
