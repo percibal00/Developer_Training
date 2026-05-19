@@ -32,4 +32,18 @@ public class UsuarioControlador {
      * Aquí podrías añadir más lógica, como verificar si el email ya existe,
      * encriptar contraseñas, etc.
      */
+
+    public boolean validarEmail(String email) {
+
+        return email.contains("@") && email.contains(".");
+    }
+
+    /**
+     * Validar contraseña
+     */
+    public boolean validarPassword(String password) {
+
+        return password.length() >= 4;
+    }
+}
 }
