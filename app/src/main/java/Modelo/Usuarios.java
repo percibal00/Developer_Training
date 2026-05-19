@@ -2,17 +2,21 @@ package Modelo;
 
 public class Usuarios {
 
-    private String idUsuario;
+    private int idUsuario;
     private String nombre;
     private String email;
     private String contrasena;
     private int edad;
+    private String fechaRegistro;
 
-    public String getIdUsuario() {
+    public Usuarios() {
+    }
+
+    public int getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(String idUsuario) {
+    public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -48,14 +52,23 @@ public class Usuarios {
         this.edad = edad;
     }
 
+    public String getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(String fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
     @Override
     public String toString() {
         return "Usuarios{" +
-                "idUsuario='" + idUsuario + '\'' +
+                "idUsuario=" + idUsuario +
                 ", nombre='" + nombre + '\'' +
                 ", email='" + email + '\'' +
                 ", contrasena='" + contrasena + '\'' +
                 ", edad=" + edad +
+                ", fechaRegistro='" + fechaRegistro + '\'' +
                 '}';
     }
 }
