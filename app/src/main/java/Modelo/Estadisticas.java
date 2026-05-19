@@ -2,6 +2,7 @@ package Modelo;
 
 public class Estadisticas {
 
+    //Atributos
     private String idEstadisticas;
     private String idUsuario;
     private String nivelesCompletados;
@@ -9,6 +10,7 @@ public class Estadisticas {
     private int rachas;
     private String ultimoNivelJugado;
 
+    //getters y setters
     public String getIdEstadisticas() {
         return idEstadisticas;
     }
@@ -57,6 +59,7 @@ public class Estadisticas {
         this.ultimoNivelJugado = ultimoNivelJugado;
     }
 
+    //toString
     @Override
     public String toString() {
         return "Estadisticas{" +

@@ -22,6 +22,7 @@ import Modelo.Usuarios;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Atributos
     private TextInputEditText etEmail, etPassword;
     private Button btnLogin;
     private TextView tvRegister;

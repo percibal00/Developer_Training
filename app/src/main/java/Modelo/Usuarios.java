@@ -2,6 +2,7 @@ package Modelo;
 
 public class Usuarios {
 
+    //Atributos
     private int idUsuario;
     private String nombre;
     private String email;
@@ -9,9 +10,11 @@ public class Usuarios {
     private int edad;
     private String fechaRegistro;
 
+    //Constructor
     public Usuarios() {
     }
 
+    //getters y setters
     public int getIdUsuario() {
         return idUsuario;
     }
@@ -60,6 +63,7 @@ public class Usuarios {
         this.fechaRegistro = fechaRegistro;
     }
 
+    //toString
     @Override
     public String toString() {
         return "Usuarios{" +

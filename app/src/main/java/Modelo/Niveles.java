@@ -2,10 +2,12 @@ package Modelo;
 
 public class Niveles {
 
+    //Atributos
     private String idNiveles;
     private String seccion;
     private int numeroNivel;
 
+    //Constructor
     public Niveles() {}
 
     public Niveles(String idNiveles, String seccion, int numeroNivel) {
@@ -14,6 +16,7 @@ public class Niveles {
         this.numeroNivel = numeroNivel;
     }
 
+    //getters y setters
     public String getIdNiveles() {
         return idNiveles;
     }
@@ -38,6 +41,7 @@ public class Niveles {
         this.numeroNivel = numeroNivel;
     }
 
+    //toSring
     @Override
     public String toString() {
         return "Niveles{" +
