@@ -46,4 +46,4 @@ public class UsuarioControlador {
         return password.length() >= 4;
     }
 }
-}
+
