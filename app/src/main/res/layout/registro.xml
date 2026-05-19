@@ -51,7 +51,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:passwordToggleEnabled="true"
-        tools2:layout_editor_absoluteY="293dp">
+        tools2:layout_editor_absoluteY="308dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etConfirm"
