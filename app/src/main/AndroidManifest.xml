@@ -15,19 +15,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Developer_Training">
         <activity
-            android:name=".PerfilActivity"
+            android:name="com.example.Vista.PerfilActivity"
             android:exported="false" />
         <activity
-            android:name=".HistorialActivity"
+            android:name="com.example.Vista.HistorialActivity"
             android:exported="false" />
         <activity
-            android:name=".RegistroActivity"
+            android:name="com.example.Vista.RegistroActivity"
             android:exported="false" />
         <activity
-            android:name=".MenuActivity"
+            android:name="com.example.Vista.MenuActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.Vista.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

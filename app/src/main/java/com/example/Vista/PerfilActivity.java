@@ -1,9 +1,11 @@
-package com.example.developerTraining;
+package com.example.Vista;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.developerTraining.R;
 
 public class PerfilActivity extends AppCompatActivity {
     @Override

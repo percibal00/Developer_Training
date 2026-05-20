@@ -1,10 +1,11 @@
-package com.example.developerTraining;
+package com.example.Vista;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
-import Modelo.Usuarios;
+
+import com.example.developerTraining.R;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -14,7 +15,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.menu);
 
         // Opcional: Si quieres mostrar el nombre del usuario
-        String nombre = getIntent().getStringExtra("NOMBRE_USUARIO");
+        // String nombre = getIntent().getStringExtra("NOMBRE_USUARIO");
         // Aquí podrías buscar un TextView en menu.xml para poner el nombre
 
         findViewById(R.id.button3).setOnClickListener(v -> {

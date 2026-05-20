@@ -1,4 +1,4 @@
-package com.example.developerTraining;
+package com.example.Vista;
 
 import org.junit.Test;
 
