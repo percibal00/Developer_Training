@@ -32,11 +32,12 @@
         android:layout_height="174dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="80dp"
+        android:autofillHints="name"
         android:background="@android:color/transparent"
         android:gravity="start|top"
-        android:hint="Editar perfil..."
+        android:hint="@string/hint_editar_perfil"
         android:inputType="textMultiLine"
-        android:text="Datos de usuario"
+        android:text="@string/text_datos_usuario"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ImagenPerfil" />
@@ -47,7 +48,7 @@
         android:layout_height="104dp"
         android:layout_marginEnd="128dp"
         android:layout_marginBottom="92dp"
-        android:text="Historial"
+        android:text="@string/btn_historial"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

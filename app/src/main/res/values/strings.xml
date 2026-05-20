@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Developer_Training</string>
+    <string name="pantalla_historial">Pantalla de Historial</string>
+    <string name="hint_editar_perfil">Editar perfil&#8230;</string>
+    <string name="text_datos_usuario">Datos de usuario</string>
+    <string name="btn_historial">Historial</string>
 </resources>
