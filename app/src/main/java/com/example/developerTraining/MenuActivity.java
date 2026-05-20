@@ -1,5 +1,6 @@
 package com.example.developerTraining;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,5 +16,10 @@ public class MenuActivity extends AppCompatActivity {
         // Opcional: Si quieres mostrar el nombre del usuario
         String nombre = getIntent().getStringExtra("NOMBRE_USUARIO");
         // Aquí podrías buscar un TextView en menu.xml para poner el nombre
+
+        findViewById(R.id.button3).setOnClickListener(v -> {
+            Intent intent = new Intent(MenuActivity.this, PerfilActivity.class);
+            startActivity(intent);
+        });
     }
 }
