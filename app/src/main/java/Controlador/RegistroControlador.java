@@ -2,7 +2,6 @@ package Controlador;
 
 import android.content.Context;
 
-import Modelo.ConexionMySQL;
 import Modelo.Usuarios;
 import Modelo.UsuariosDAO;
 
@@ -21,7 +20,7 @@ public class RegistroControlador {
 
         // Usamos una tarea síncrona pero que debe llamarse desde un hilo de fondo
         // en Android no se pueden hacer peticiones de red en el hilo principal.
-        return ConexionMySQL.getUsuarioByLogin(email, password);
+        return usuariosDAO.getUsuarioByLogin(email, password);
     }
     public boolean validarEmail(String email) {
 

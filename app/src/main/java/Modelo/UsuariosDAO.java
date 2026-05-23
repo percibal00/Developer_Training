@@ -1,85 +1,80 @@
 package Modelo;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UsuariosDAO {
 
-    private SQLiteDatabase db;
-    private DatabaseHelper dbHelper;
+    private Context context;
 
-    // El constructor recibe el contexto para inicializar la conexión a la base de datos
     public UsuariosDAO(Context context) {
-        dbHelper = new DatabaseHelper(context);
-    }
-
-    // Abre la base de datos en modo escritura
-    public void abrir() {
-        db = dbHelper.getWritableDatabase();
-    }
-
-    // Cierra la base de datos
-    public void cerrar() {
-        if (dbHelper != null) {
-            dbHelper.close();
-        }
+        this.context = context;
     }
 
     /**
-     * COMPROBAR REGISTRO
-     * Inserta un nuevo usuario en la base de datos.
+     * Busca un usuario en la base de datos MySQL por email y contraseña.
      */
-    public boolean registrarUsuario(Usuarios usuario) {
-        abrir();
-        ContentValues valores = new ContentValues();
-        valores.put("NOMBRE", usuario.getNombre());
-        valores.put("EMAIL", usuario.getEmail());
-        valores.put("CONTRASEÑA", usuario.getContrasena());
-        valores.put("EDAD", usuario.getEdad());
-        valores.put("FECHA_REGISTRO", usuario.getFechaRegistro());
+    public Usuarios getUsuarioByLogin(String email, String password) {
+        Usuarios usuario = null;
+        Connection conn = ConexionMySQL.conectar();
+        if (conn == null) return null;
 
-        long resultado = db.insert("Usuarios", null, valores);
-        cerrar();
+        String query = "SELECT * FROM Usuarios WHERE EMAIL = ? AND CONTRASENA = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, email);
+            ps.setString(2, password);
 
-        return resultado != -1;
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    usuario = new Usuarios();
+                    usuario.setIdUsuario(rs.getInt("ID_USUARIO"));
+                    usuario.setNombre(rs.getString("NOMBRE"));
+                    usuario.setEmail(rs.getString("EMAIL"));
+                    usuario.setEdad(rs.getInt("EDAD"));
+                    usuario.setFechaRegistro(rs.getString("FECHA_REGISTRO"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return usuario;
     }
 
     /**
-     * COMPROBAR INICIO DE SESIÓN
-     * Busca si existe un usuario con el email y contraseña introducidos.
+     * Registra un nuevo usuario en la base de datos MySQL.
      */
-    public Usuarios comprobarLogin(String email, String contrasena) {
-        abrir();
-        Usuarios usuarioLogueado = null;
+    public boolean registrarUsuario(Usuarios u) {
+        Connection conn = ConexionMySQL.conectar();
+        if (conn == null) return false;
 
-        String[] columnas = {"ID_USUARIO", "NOMBRE", "EMAIL", "EDAD", "FECHA_REGISTRO"};
-        String seleccion = "EMAIL = ? AND CONTRASEÑA = ?";
-        String[] seleccionArgs = {email, contrasena};
+        String query = "INSERT INTO Usuarios (NOMBRE, EMAIL, CONTRASENA, EDAD) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, u.getNombre());
+            ps.setString(2, u.getEmail());
+            ps.setString(3, u.getContrasena());
+            ps.setInt(4, u.getEdad());
 
-        Cursor cursor = db.query(
-                "Usuarios",
-                columnas,
-                seleccion,
-                seleccionArgs,
-                null, null, null
-        );
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
 
-        if (cursor != null && cursor.moveToFirst()) {
-            usuarioLogueado = new Usuarios();
-            usuarioLogueado.setIdUsuario(cursor.getInt(cursor.getColumnIndexOrThrow("ID_USUARIO")));
-            usuarioLogueado.setNombre(cursor.getString(cursor.getColumnIndexOrThrow("NOMBRE")));
-            usuarioLogueado.setEmail(cursor.getString(cursor.getColumnIndexOrThrow("EMAIL")));
-            usuarioLogueado.setEdad(cursor.getInt(cursor.getColumnIndexOrThrow("EDAD")));
-            usuarioLogueado.setFechaRegistro(cursor.getString(cursor.getColumnIndexOrThrow("FECHA_REGISTRO")));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
-        if (cursor != null) {
-            cursor.close();
-        }
-        cerrar();
-
-        return usuarioLogueado;
     }
 }
