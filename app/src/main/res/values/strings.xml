@@ -16,4 +16,8 @@
     <string name="title_recent_history">Historial Reciente</string>
     <string name="historial_victoria">● Partida Victoria</string>
     <string name="historial_fallida">● Partida Fallida</string>
+    <string name="hint_email">Correo electrónico</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="btn_login">Iniciar Sesión</string>
+    <string name="text_no_account">¿No tienes cuenta? Regístrate aquí</string>
 </resources>
