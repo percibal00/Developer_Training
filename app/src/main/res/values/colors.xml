@@ -10,4 +10,10 @@
     <color name="text_subtitle">#8E99AF</color>
     <color name="victory_green">#4CAF50</color>
     <color name="failure_red">#F44336</color>
+    <color name="bg_game">#050816</color>
+    <color name="card_bg">#111827</color>
+    <color name="purple_btn_start">#8B5CF6</color>
+    <color name="purple_btn_end">#6D28D9</color>
+    <color name="accent_blue">#3B82F6</color>
+    <color name="timer_color">#7C9DFF</color>
 </resources>
