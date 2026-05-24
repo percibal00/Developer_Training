@@ -32,7 +32,6 @@ public class Nivel2Activity extends AppCompatActivity {
     private List<Pregunta> listaPreguntas;
     private int indicePregunta = 0;
     private int aciertos = 0;
-    private static final int MAX_PREGUNTAS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +79,11 @@ public class Nivel2Activity extends AppCompatActivity {
 
     private void cargarPreguntasFallback() {
         listaPreguntas = new ArrayList<>();
-        listaPreguntas.add(new Pregunta("for(int i=0; i<5; ___)", "i++", "Lógica"));
-        listaPreguntas.add(new Pregunta("int x = 10; if(x ___ 10)", "==", "Condicionales"));
-        listaPreguntas.add(new Pregunta("String s = ___;", "null", "Variables"));
-        listaPreguntas.add(new Pregunta("while(___)", "true", "Bucles"));
-        listaPreguntas.add(new Pregunta("void main(___ args)", "String[]", "Funciones"));
+        listaPreguntas.add(new Pregunta("if (x > 0) { ___ }", "x++", "Condicionales"));
+        listaPreguntas.add(new Pregunta("boolean isJava = ___;", "true", "Booleanos"));
+        listaPreguntas.add(new Pregunta("int[] nums = {1, 2, ___};", "3", "Arrays"));
+        listaPreguntas.add(new Pregunta("public ___ void main...", "static", "Modificadores"));
+        listaPreguntas.add(new Pregunta("Scanner sc = new ___(System.in);", "Scanner", "Input"));
     }
 
         private void verificarRespuesta(int checkedId) {
@@ -112,8 +111,37 @@ public class Nivel2Activity extends AppCompatActivity {
             tvChallengeDesc.setText("Nivel 2 - Completa:");
             tvCodeSnippet.setText(p.getPregunta());
             rgOptions.clearCheck();
-            rb1.setText(p.getRespuesta());
-            rb2.setText("Opción 2"); rb3.setText("Opción 3"); rb4.setText("Opción 4"); rb5.setText("Opción 5");
+            
+            List<String> opciones = new ArrayList<>();
+            opciones.add(p.getRespuesta());
+            
+            switch (p.getTipo()) {
+                case "Condicionales":
+                    opciones.add("break"); opciones.add("return"); opciones.add("continue"); opciones.add("exit");
+                    break;
+                case "Booleanos":
+                    opciones.add("false"); opciones.add("1"); opciones.add("0"); opciones.add("null");
+                    break;
+                case "Arrays":
+                    opciones.add("0"); opciones.add("4"); opciones.add("x"); opciones.add("nums");
+                    break;
+                case "Modificadores":
+                    opciones.add("final"); opciones.add("public"); opciones.add("void"); opciones.add("class");
+                    break;
+                case "Input":
+                    opciones.add("System"); opciones.add("Input"); opciones.add("Reader"); opciones.add("Print");
+                    break;
+                default:
+                    opciones.add("opA"); opciones.add("opB"); opciones.add("opC"); opciones.add("opD");
+                    break;
+            }
+            
+            java.util.Collections.shuffle(opciones);
+            rb1.setText(opciones.get(0));
+            rb2.setText(opciones.get(1));
+            rb3.setText(opciones.get(2));
+            rb4.setText(opciones.get(3));
+            rb5.setText(opciones.get(4));
         }
     }
 

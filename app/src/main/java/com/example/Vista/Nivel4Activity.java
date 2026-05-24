@@ -32,7 +32,6 @@ public class Nivel4Activity extends AppCompatActivity {
     private List<Pregunta> listaPreguntas;
     private int indicePregunta = 0;
     private int aciertos = 0;
-    private static final int MAX_PREGUNTAS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +79,11 @@ public class Nivel4Activity extends AppCompatActivity {
 
     private void cargarPreguntasFallback() {
         listaPreguntas = new ArrayList<>();
-        listaPreguntas.add(new Pregunta("for(int i=0; i<5; ___)", "i++", "L贸gica"));
-        listaPreguntas.add(new Pregunta("int x = 10; if(x ___ 10)", "==", "Condicionales"));
-        listaPreguntas.add(new Pregunta("String s = ___;", "null", "Variables"));
-        listaPreguntas.add(new Pregunta("while(___)", "true", "Bucles"));
-        listaPreguntas.add(new Pregunta("void main(___ args)", "String[]", "Funciones"));
+        listaPreguntas.add(new Pregunta("public class ___ { }", "Main", "POO"));
+        listaPreguntas.add(new Pregunta("Animal a = new ___();", "Dog", "Herencia"));
+        listaPreguntas.add(new Pregunta("@Override public ___ toString()", "String", "M茅todos"));
+        listaPreguntas.add(new Pregunta("private ___ nombre;", "String", "Encapsulaci贸n"));
+        listaPreguntas.add(new Pregunta("this.___ = valor;", "atributo", "Contexto"));
     }
 
         private void verificarRespuesta(int checkedId) {
@@ -95,7 +94,7 @@ public class Nivel4Activity extends AppCompatActivity {
         Pregunta p = listaPreguntas.get(indicePregunta);
         if (respuestaSeleccionada.contains(p.getRespuesta())) {
             aciertos = 1;
-            Toast.makeText(this, "orrecto!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "锟紺orrecto!", Toast.LENGTH_SHORT).show();
         } else {
             aciertos = 0;
             Toast.makeText(this, "Incorrecto", Toast.LENGTH_SHORT).show();
@@ -114,8 +113,37 @@ public class Nivel4Activity extends AppCompatActivity {
             tvChallengeDesc.setText("Nivel 4 - Completa:");
             tvCodeSnippet.setText(p.getPregunta());
             rgOptions.clearCheck();
-            rb1.setText(p.getRespuesta());
-            rb2.setText("Opci贸n 2"); rb3.setText("Opci贸n 3"); rb4.setText("Opci贸n 4"); rb5.setText("Opci贸n 5");
+            
+            List<String> opciones = new ArrayList<>();
+            opciones.add(p.getRespuesta());
+            
+            switch (p.getTipo()) {
+                case "POO":
+                    opciones.add("main"); opciones.add("void"); opciones.add("static"); opciones.add("String");
+                    break;
+                case "Herencia":
+                    opciones.add("Animal"); opciones.add("new"); opciones.add("Object"); opciones.add("Class");
+                    break;
+                case "M茅todos":
+                    opciones.add("void"); opciones.add("int"); opciones.add("boolean"); opciones.add("Object");
+                    break;
+                case "Encapsulaci贸n":
+                    opciones.add("public"); opciones.add("protected"); opciones.add("final"); opciones.add("static");
+                    break;
+                case "Contexto":
+                    opciones.add("super"); opciones.add("that"); opciones.add("class"); opciones.add("object");
+                    break;
+                default:
+                    opciones.add("op1"); opciones.add("op2"); opciones.add("op3"); opciones.add("op4");
+                    break;
+            }
+            
+            java.util.Collections.shuffle(opciones);
+            rb1.setText(opciones.get(0));
+            rb2.setText(opciones.get(1));
+            rb3.setText(opciones.get(2));
+            rb4.setText(opciones.get(3));
+            rb5.setText(opciones.get(4));
         }
     }
 

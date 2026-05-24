@@ -32,7 +32,6 @@ public class Nivel3Activity extends AppCompatActivity {
     private List<Pregunta> listaPreguntas;
     private int indicePregunta = 0;
     private int aciertos = 0;
-    private static final int MAX_PREGUNTAS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +79,11 @@ public class Nivel3Activity extends AppCompatActivity {
 
     private void cargarPreguntasFallback() {
         listaPreguntas = new ArrayList<>();
-        listaPreguntas.add(new Pregunta("for(int i=0; i<5; ___)", "i++", "Lógica"));
-        listaPreguntas.add(new Pregunta("int x = 10; if(x ___ 10)", "==", "Condicionales"));
-        listaPreguntas.add(new Pregunta("String s = ___;", "null", "Variables"));
-        listaPreguntas.add(new Pregunta("while(___)", "true", "Bucles"));
-        listaPreguntas.add(new Pregunta("void main(___ args)", "String[]", "Funciones"));
+        listaPreguntas.add(new Pregunta("for (int i=0; i<5; ___) { }", "i++", "Bucles"));
+        listaPreguntas.add(new Pregunta("while (___) { break; }", "true", "Bucles"));
+        listaPreguntas.add(new Pregunta("do { } ___ (x < 10);", "while", "Bucles"));
+        listaPreguntas.add(new Pregunta("for (String s : ___) { }", "lista", "Iteración"));
+        listaPreguntas.add(new Pregunta("if (i == 3) ___", "continue", "Control"));
     }
 
         private void verificarRespuesta(int checkedId) {
@@ -113,8 +112,31 @@ public class Nivel3Activity extends AppCompatActivity {
             tvChallengeDesc.setText("Nivel 3 - Completa:");
             tvCodeSnippet.setText(p.getPregunta());
             rgOptions.clearCheck();
-            rb1.setText(p.getRespuesta());
-            rb2.setText("Opción 2"); rb3.setText("Opción 3"); rb4.setText("Opción 4"); rb5.setText("Opción 5");
+            
+            List<String> opciones = new ArrayList<>();
+            opciones.add(p.getRespuesta());
+            
+            switch (p.getTipo()) {
+                case "Bucles":
+                    opciones.add("i--"); opciones.add("false"); opciones.add("if"); opciones.add("for");
+                    break;
+                case "Iteración":
+                    opciones.add("String"); opciones.add("int"); opciones.add("new"); opciones.add("array");
+                    break;
+                case "Control":
+                    opciones.add("break"); opciones.add("stop"); opciones.add("exit"); opciones.add("return");
+                    break;
+                default:
+                    opciones.add("op1"); opciones.add("op2"); opciones.add("op3"); opciones.add("op4");
+                    break;
+            }
+            
+            java.util.Collections.shuffle(opciones);
+            rb1.setText(opciones.get(0));
+            rb2.setText(opciones.get(1));
+            rb3.setText(opciones.get(2));
+            rb4.setText(opciones.get(3));
+            rb5.setText(opciones.get(4));
         }
     }
 

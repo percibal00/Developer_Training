@@ -32,7 +32,6 @@ public class Nivel5Activity extends AppCompatActivity {
     private List<Pregunta> listaPreguntas;
     private int indicePregunta = 0;
     private int aciertos = 0;
-    private static final int MAX_PREGUNTAS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +79,11 @@ public class Nivel5Activity extends AppCompatActivity {
 
     private void cargarPreguntasFallback() {
         listaPreguntas = new ArrayList<>();
-        listaPreguntas.add(new Pregunta("for(int i=0; i<5; ___)", "i++", "L贸gica"));
-        listaPreguntas.add(new Pregunta("int x = 10; if(x ___ 10)", "==", "Condicionales"));
-        listaPreguntas.add(new Pregunta("String s = ___;", "null", "Variables"));
-        listaPreguntas.add(new Pregunta("while(___)", "true", "Bucles"));
-        listaPreguntas.add(new Pregunta("void main(___ args)", "String[]", "Funciones"));
+        listaPreguntas.add(new Pregunta("try { } ___ (Exception e) { }", "catch", "Excepciones"));
+        listaPreguntas.add(new Pregunta("throw new ___(\"Error\");", "RuntimeException", "Excepciones"));
+        listaPreguntas.add(new Pregunta("Thread t = new ___(() -> { });", "Thread", "Concurrencia"));
+        listaPreguntas.add(new Pregunta("List<String> l = new ___<>();", "ArrayList", "Colecciones"));
+        listaPreguntas.add(new Pregunta("t.join(); // Espera a que el ___ termine", "hilo", "Hilos"));
     }
 
         private void verificarRespuesta(int checkedId) {
@@ -95,7 +94,7 @@ public class Nivel5Activity extends AppCompatActivity {
         Pregunta p = listaPreguntas.get(indicePregunta);
         if (respuestaSeleccionada.contains(p.getRespuesta())) {
             aciertos = 1;
-            Toast.makeText(this, "orrecto!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "锟紺orrecto!", Toast.LENGTH_SHORT).show();
         } else {
             aciertos = 0;
             Toast.makeText(this, "Incorrecto", Toast.LENGTH_SHORT).show();
@@ -114,8 +113,34 @@ public class Nivel5Activity extends AppCompatActivity {
             tvChallengeDesc.setText("Nivel 5 - Completa:");
             tvCodeSnippet.setText(p.getPregunta());
             rgOptions.clearCheck();
-            rb1.setText(p.getRespuesta());
-            rb2.setText("Opci贸n 2"); rb3.setText("Opci贸n 3"); rb4.setText("Opci贸n 4"); rb5.setText("Opci贸n 5");
+            
+            List<String> opciones = new ArrayList<>();
+            opciones.add(p.getRespuesta());
+            
+            switch (p.getTipo()) {
+                case "Excepciones":
+                    opciones.add("finally"); opciones.add("throws"); opciones.add("error"); opciones.add("try");
+                    break;
+                case "Concurrencia":
+                    opciones.add("Runnable"); opciones.add("Process"); opciones.add("Task"); opciones.add("Executor");
+                    break;
+                case "Colecciones":
+                    opciones.add("LinkedList"); opciones.add("List"); opciones.add("Collection"); opciones.add("Vector");
+                    break;
+                case "Hilos":
+                    opciones.add("proceso"); opciones.add("m茅todo"); opciones.add("bloque"); opciones.add("c贸digo");
+                    break;
+                default:
+                    opciones.add("op1"); opciones.add("op2"); opciones.add("op3"); opciones.add("op4");
+                    break;
+            }
+            
+            java.util.Collections.shuffle(opciones);
+            rb1.setText(opciones.get(0));
+            rb2.setText(opciones.get(1));
+            rb3.setText(opciones.get(2));
+            rb4.setText(opciones.get(3));
+            rb5.setText(opciones.get(4));
         }
     }
 

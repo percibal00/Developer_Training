@@ -15,8 +15,4 @@ public class PreguntaControlador {
     public List<Pregunta> obtenerPreguntas() {
         return preguntaDAO.obtenerPreguntas();
     }
-
-    public void guardarPregunta(Pregunta pregunta) {
-        preguntaDAO.insertarPregunta(pregunta);
-    }
 }
