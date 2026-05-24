@@ -1,13 +1,9 @@
 package com.example.Vista;
 
-import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.PopupWindow;
-import android.widget.SeekBar;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,45 +44,9 @@ public class MenuActivity extends AppCompatActivity {
         });
 
         // Botón Ajustes
-        findViewById(R.id.btn_settings).setOnClickListener(this::showVolumePopup);
-    }
-
-    private void showVolumePopup(View anchorView) {
-        View popupView = getLayoutInflater().inflate(R.layout.dialog_settings, (ViewGroup) anchorView.getParent(), false);
-        
-        // Ajustar el tamaño del layout para que quepa bien como popup
-        PopupWindow popupWindow = new PopupWindow(popupView, 
-                ViewGroup.LayoutParams.WRAP_CONTENT, 
-                ViewGroup.LayoutParams.WRAP_CONTENT, 
-                true);
-
-        SeekBar sbVolume = popupView.findViewById(R.id.sb_volume);
-
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        if (audioManager != null && sbVolume != null) {
-            int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-            int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-            
-            sbVolume.setMax(maxVolume);
-            sbVolume.setProgress(currentVolume);
-
-            sbVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if (fromUser) {
-                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
-                    }
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
-            });
-        }
-
-        // Mostrar debajo del botón
-        popupWindow.showAsDropDown(anchorView, 0, 10);
+        findViewById(R.id.btn_settings).setOnClickListener(v -> {
+            Intent intent = new Intent(MenuActivity.this, AjustesActivity.class);
+            startActivity(intent);
+        });
     }
 }

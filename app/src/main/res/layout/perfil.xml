@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:lineSpacingExtra="8dp"
-            android:text="@string/progreso_ejemplo"
+            android:text="Cargando progreso..."
             android:textColor="@color/text_subtitle"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -109,30 +109,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title_recent_history">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/historial_victoria"
-            android:textColor="@color/victory_green"
-            android:textSize="14sp"
-            android:paddingVertical="4dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/historial_fallida"
-            android:textColor="@color/failure_red"
-            android:textSize="14sp"
-            android:paddingVertical="4dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/historial_victoria"
-            android:textColor="@color/victory_green"
-            android:textSize="14sp"
-            android:paddingVertical="4dp"/>
 
     </LinearLayout>
 
