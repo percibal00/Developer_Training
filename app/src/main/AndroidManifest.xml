@@ -30,9 +30,6 @@
             android:name="com.example.Vista.Nivel1Activity"
             android:exported="false" />
         <activity
-            android:name="com.example.Vista.AjustesActivity"
-            android:exported="false" />
-        <activity
             android:name="com.example.Vista.MainActivity"
             android:exported="true">
             <intent-filter>

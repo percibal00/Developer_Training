@@ -19,6 +19,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
+    <SeekBar
+        android:id="@+id/sb_volume"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:max="100"
+        android:progress="70"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/btn_settings"
+        app:layout_constraintTop_toBottomOf="@id/btn_settings" />
+
     <TextView
         android:id="@+id/tv_developer"
         android:layout_width="wrap_content"

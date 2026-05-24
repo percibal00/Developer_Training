@@ -1,9 +1,12 @@
 package com.example.Vista;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,9 +47,36 @@ public class MenuActivity extends AppCompatActivity {
         });
 
         // Botón Ajustes
+        SeekBar sbVolume = findViewById(R.id.sb_volume);
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+        // Configurar el SeekBar con el volumen actual
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        sbVolume.setMax(maxVolume);
+        sbVolume.setProgress(currentVolume);
+
         findViewById(R.id.btn_settings).setOnClickListener(v -> {
-            Intent intent = new Intent(MenuActivity.this, AjustesActivity.class);
-            startActivity(intent);
+            if (sbVolume.getVisibility() == View.GONE) {
+                sbVolume.setVisibility(View.VISIBLE);
+            } else {
+                sbVolume.setVisibility(View.GONE);
+            }
+        });
+
+        sbVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
 }
