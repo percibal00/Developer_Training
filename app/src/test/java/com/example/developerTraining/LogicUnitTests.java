@@ -13,7 +13,7 @@ public class LogicUnitTests {
 
     @Test
     public void testValidacionEmail() {
-        UsuarioControlador controlador = new UsuarioControlador(null);
+        UsuarioControlador controlador = new UsuarioControlador();
         
         // ASSERT: Comprobar que detecta emails válidos e inválidos
         assertTrue("El email debería ser válido", controlador.validarEmail("test@example.com"));
@@ -23,7 +23,7 @@ public class LogicUnitTests {
 
     @Test
     public void testValidacionPassword() {
-        UsuarioControlador controlador = new UsuarioControlador(null);
+        UsuarioControlador controlador = new UsuarioControlador();
         
         // ASSERT: Comprobar longitud mínima de contraseña
         assertTrue("Password de 4 caracteres debería ser válido", controlador.validarPassword("1234"));
@@ -32,9 +32,9 @@ public class LogicUnitTests {
 
     @Test
     public void testRegistroLogic() {
-        RegistroControlador registro = new RegistroControlador(null);
+        UsuarioControlador controlador = new UsuarioControlador();
         
         // ASSERT: Comprobar validación de email en registro
-        assertTrue(registro.validarEmail("admin@dev.com"));
+        assertTrue(controlador.validarEmail("admin@dev.com"));
     }
 }

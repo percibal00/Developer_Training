@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         
                         // Ir a la pantalla de Menú
                         Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                        intent.putExtra("ID_USUARIO", usuario.getIdUsuario());
                         intent.putExtra("NOMBRE_USUARIO", usuario.getNombre());
                         startActivity(intent);
                         finish(); 
