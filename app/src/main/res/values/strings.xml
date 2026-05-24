@@ -16,6 +16,9 @@
     <string name="title_recent_history">Historial Reciente</string>
     <string name="historial_victoria">● Partida Victoria</string>
     <string name="historial_fallida">● Partida Fallida</string>
+    <string name="title_settings">Ajustes de Sonido</string>
+    <string name="label_volume">Volumen de Voz</string>
+    <string name="btn_close">Cerrar</string>
     <string name="hint_email">Correo electrónico</string>
     <string name="hint_password">Contraseña</string>
     <string name="btn_login">Iniciar Sesión</string>
