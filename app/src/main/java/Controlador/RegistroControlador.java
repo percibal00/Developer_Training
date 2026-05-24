@@ -13,14 +13,18 @@ public class RegistroControlador {
         this.usuariosDAO = new UsuariosDAO(context);
     }
 
-    public Usuarios Register(String email, String password) {
-        if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-            return null;
+    public boolean registrar(String nombre, String email, String password, int edad) {
+        if (email == null || !validarEmail(email) || password == null || password.length() < 4) {
+            return false;
         }
 
-        // Usamos una tarea síncrona pero que debe llamarse desde un hilo de fondo
-        // en Android no se pueden hacer peticiones de red en el hilo principal.
-        return usuariosDAO.getUsuarioByLogin(email, password);
+        Usuarios nuevoUsuario = new Usuarios();
+        nuevoUsuario.setNombre(nombre);
+        nuevoUsuario.setEmail(email);
+        nuevoUsuario.setContrasena(password);
+        nuevoUsuario.setEdad(edad);
+
+        return usuariosDAO.registrarUsuario(nuevoUsuario);
     }
     public boolean validarEmail(String email) {
 
