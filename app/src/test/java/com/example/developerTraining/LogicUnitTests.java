@@ -4,7 +4,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import Controlador.UsuarioControlador;
-import Controlador.RegistroControlador;
 
 /**
  * Pruebas unitarias de lógica (JUnit)
