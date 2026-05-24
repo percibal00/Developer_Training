@@ -9,31 +9,25 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.developertraining.R;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import Controlador.PreguntaControlador;
 import Controlador.EstadisticaControlador;
 import Modelo.Pregunta;
 import Modelo.Estadisticas;
 
-public class Nivel1Activity extends AppCompatActivity {
-
+public class Nivel2Activity extends AppCompatActivity {
     private TextView tvTimer, tvChallengeName, tvChallengeDesc, tvCodeSnippet;
     private RadioGroup rgOptions;
     private RadioButton rb1, rb2, rb3, rb4, rb5;
-    private Button btnFinish;
+    private Button btnNextLevel;
     private CountDownTimer countDownTimer;
     private long timeLeftInMillis = 45000;
-
     private PreguntaControlador preguntaControlador;
     private EstadisticaControlador estadisticaControlador;
-    
     private int idUsuario;
     private List<Pregunta> listaPreguntas;
     private int indicePregunta = 0;
@@ -43,87 +37,71 @@ public class Nivel1Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.nivel1);
-
-        // Recibir ID de usuario
+        setContentView(R.layout.nivel2);
         idUsuario = getIntent().getIntExtra("ID_USUARIO", -1);
-
-        // 1. Inicializar Controladores
         preguntaControlador = new PreguntaControlador(this);
         estadisticaControlador = new EstadisticaControlador(this);
-
-        // 2. Vincular vistas
         tvTimer = findViewById(R.id.tv_timer);
         tvChallengeName = findViewById(R.id.tv_challenge_name);
         tvChallengeDesc = findViewById(R.id.tv_challenge_desc);
         tvCodeSnippet = findViewById(R.id.tv_code_snippet);
         rgOptions = findViewById(R.id.rg_options);
-        rgOptions.setEnabled(false); // Deshabilitar hasta que carguen las preguntas
         rb1 = findViewById(R.id.rb_option1);
         rb2 = findViewById(R.id.rb_option2);
         rb3 = findViewById(R.id.rb_option3);
         rb4 = findViewById(R.id.rb_option4);
         rb5 = findViewById(R.id.rb_option5);
-        btnFinish = findViewById(R.id.btn_finish);
+        btnNextLevel = findViewById(R.id.btn_next_level);
 
-        // 3. Cargar preguntas reales desde MySQL
         new Thread(() -> {
             listaPreguntas = preguntaControlador.obtenerPreguntas();
             runOnUiThread(() -> {
                 if (listaPreguntas == null || listaPreguntas.isEmpty()) {
-                    // Cargar preguntas de respaldo si falla la BD
-                    listaPreguntas = new java.util.ArrayList<>();
-                    listaPreguntas.add(new Modelo.Pregunta("for(int i=0; i<5; ___)", "i++", "Lógica"));
-                    listaPreguntas.add(new Modelo.Pregunta("int x = 10; if(x ___ 10)", "==", "Condicionales"));
-                    listaPreguntas.add(new Modelo.Pregunta("String s = ___;", "null", "Variables"));
-                    listaPreguntas.add(new Modelo.Pregunta("while(___)", "true", "Bucles"));
-                    listaPreguntas.add(new Modelo.Pregunta("void main(___ args)", "String[]", "Funciones"));
+                    cargarPreguntasFallback();
                     Toast.makeText(this, "Usando preguntas locales (Error BD)", Toast.LENGTH_SHORT).show();
                 }
-                
                 java.util.Collections.shuffle(listaPreguntas);
-                rgOptions.setEnabled(true);
                 mostrarPregunta();
             });
         }).start();
 
-        // 4. Iniciar el cronómetro
         startTimer();
-
-        // 5. Configurar lógica de respuesta
         rgOptions.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId != -1) {
-                verificarRespuesta(checkedId);
-            }
+            if (checkedId != -1) verificarRespuesta(checkedId);
         });
 
-        btnFinish.setOnClickListener(v -> {
-            finishGame();
+        btnNextLevel.setOnClickListener(v -> {
+            Intent intent = new Intent(this, Nivel3Activity.class);
+            intent.putExtra("ID_USUARIO", idUsuario);
+            startActivity(intent);
+            finish();
         });
     }
 
-    private void verificarRespuesta(int checkedId) {
-        if (listaPreguntas == null || indicePregunta >= listaPreguntas.size()) return;
+    private void cargarPreguntasFallback() {
+        listaPreguntas = new ArrayList<>();
+        listaPreguntas.add(new Pregunta("for(int i=0; i<5; ___)", "i++", "Lógica"));
+        listaPreguntas.add(new Pregunta("int x = 10; if(x ___ 10)", "==", "Condicionales"));
+        listaPreguntas.add(new Pregunta("String s = ___;", "null", "Variables"));
+        listaPreguntas.add(new Pregunta("while(___)", "true", "Bucles"));
+        listaPreguntas.add(new Pregunta("void main(___ args)", "String[]", "Funciones"));
+    }
 
+        private void verificarRespuesta(int checkedId) {
+        if (listaPreguntas == null || indicePregunta >= listaPreguntas.size()) return;
         RadioButton selectedRb = findViewById(checkedId);
         if (selectedRb == null) return;
-        
         String respuestaSeleccionada = selectedRb.getText().toString();
         Pregunta p = listaPreguntas.get(indicePregunta);
-
         if (respuestaSeleccionada.contains(p.getRespuesta())) {
             aciertos = 1;
         } else {
             aciertos = 0;
         }
-
-        // Bloquear opciones tras responder
         rgOptions.setEnabled(false);
         for (int i = 0; i < rgOptions.getChildCount(); i++) {
             rgOptions.getChildAt(i).setEnabled(false);
         }
-
-        // Finalizar lógica de la pregunta única
         new android.os.Handler().postDelayed(this::finishGame, 500);
     }
 
@@ -131,17 +109,11 @@ public class Nivel1Activity extends AppCompatActivity {
         if (listaPreguntas != null && !listaPreguntas.isEmpty()) {
             Pregunta p = listaPreguntas.get(indicePregunta);
             tvChallengeName.setText(p.getTipo());
-            tvChallengeDesc.setText("Completa el código:");
+            tvChallengeDesc.setText("Nivel 2 - Completa:");
             tvCodeSnippet.setText(p.getPregunta());
-            
             rgOptions.clearCheck();
-
-            // Mock de opciones para asegurar 5 opciones
             rb1.setText(p.getRespuesta());
-            rb2.setText("null");
-            rb3.setText("error");
-            rb4.setText("undefined");
-            rb5.setText("void");
+            rb2.setText("Opción 2"); rb3.setText("Opción 3"); rb4.setText("Opción 4"); rb5.setText("Opción 5");
         }
     }
 
@@ -150,70 +122,35 @@ public class Nivel1Activity extends AppCompatActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeLeftInMillis = millisUntilFinished;
-                updateCountDownText();
+                int seconds = (int) (timeLeftInMillis / 1000) % 60;
+                tvTimer.setText(String.format(Locale.getDefault(), "00:%02d", seconds));
             }
-
-            @Override
-            public void onFinish() {
-                tvTimer.setText("00:00");
-                finishGame();
-            }
+            @Override public void onFinish() { finishGame(); }
         }.start();
     }
 
-    private void updateCountDownText() {
-        int seconds = (int) (timeLeftInMillis / 1000) % 60;
-        String timeLeftFormatted = String.format(Locale.getDefault(), "00:%02d", seconds);
-        tvTimer.setText(timeLeftFormatted);
-    }
-
-    private boolean isFinishingGame = false;
-
     private void finishGame() {
-        if (isFinishingGame) return;
-        isFinishingGame = true;
-
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-        }
-
+        if (countDownTimer != null) countDownTimer.cancel();
         boolean aprobado = aciertos >= 1;
         if (idUsuario != -1) {
             Estadisticas stats = new Estadisticas();
             stats.setIdUsuario(String.valueOf(idUsuario));
-            stats.setNivelesCompletados(aprobado ? "Nivel 1" : "Nivel 1 (Fallido)");
-            stats.setUltimoNivelJugado("Nivel 1");
+            stats.setNivelesCompletados(aprobado ? "Nivel 2" : "Nivel 2 (Fallido)");
+            stats.setUltimoNivelJugado("Nivel 2");
             stats.setRachas(aprobado ? 1 : 0);
             new Thread(() -> estadisticaControlador.actualizarProgreso(stats)).start();
         }
-
         if (aprobado) {
-            // Mostrar botón para pasar al siguiente nivel
-            btnFinish.setText("Siguiente Nivel");
-            btnFinish.setVisibility(View.VISIBLE);
+            btnNextLevel.setVisibility(View.VISIBLE);
             rgOptions.setEnabled(false);
-            Toast.makeText(this, "¡Nivel 1 superado! Pulsa el botón para continuar.", Toast.LENGTH_LONG).show();
-            
-            btnFinish.setOnClickListener(v -> {
-                Intent intent = new Intent(this, Nivel2Activity.class);
-                intent.putExtra("ID_USUARIO", idUsuario);
-                startActivity(intent);
-                finish();
-            });
+            Toast.makeText(this, "¡Nivel 2 superado! Haz clic en el botón para avanzar.", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "Nivel 1 fallido. Volviendo al menú...", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Nivel 2 fallido. Volviendo al menú...", Toast.LENGTH_LONG).show();
             new android.os.Handler().postDelayed(() -> {
                 startActivity(new Intent(this, MenuActivity.class));
                 finish();
             }, 2000);
         }
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-        }
-    }
 }
+
