@@ -113,14 +113,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_challenge_desc" />
 
-            <!-- Question Area Placeholder -->
-            <View
-                android:id="@+id/view_question_placeholder"
+            <!-- Question Area (Answers Container) -->
+            <LinearLayout
+                android:id="@+id/layout_answers"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="60dp"
-                android:background="#0A0F1D"
+                android:orientation="vertical"
+                android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
