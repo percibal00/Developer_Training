@@ -14,20 +14,23 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import Controlador.UsuarioControlador;
 import Modelo.Usuarios;
-import Modelo.UsuariosDAO;
 
 public class RegistroActivity extends AppCompatActivity {
 
     private TextInputEditText etName, etEmail, etPassword, etAge;
     private Button btnRegister;
     private TextView tvBackToLogin;
+    private UsuarioControlador usuarioControlador;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registro);
+
+        usuarioControlador = new UsuarioControlador();
 
         // Inicializar vistas
         etName = findViewById(R.id.etRegName);
@@ -49,6 +52,16 @@ public class RegistroActivity extends AppCompatActivity {
                 return;
             }
 
+            if (!usuarioControlador.validarEmail(email)) {
+                Toast.makeText(this, "Email no válido", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!usuarioControlador.validarPassword(pass)) {
+                Toast.makeText(this, "La contraseña debe tener al menos 4 caracteres", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             int age;
             try {
                 age = Integer.parseInt(ageStr);
@@ -66,8 +79,7 @@ public class RegistroActivity extends AppCompatActivity {
             btnRegister.setEnabled(false);
 
             executorService.execute(() -> {
-                UsuariosDAO usuariosDAO = new UsuariosDAO(this);
-                boolean exito = usuariosDAO.registrarUsuario(nuevoUsuario);
+                boolean exito = usuarioControlador.registrarUsuario(nuevoUsuario);
 
                 runOnUiThread(() -> {
                     btnRegister.setEnabled(true);
@@ -84,7 +96,9 @@ public class RegistroActivity extends AppCompatActivity {
         });
 
         tvBackToLogin.setOnClickListener(v -> {
-            finish(); // Simplemente cerramos para volver a la pantalla anterior (Login)
+            Intent intent = new Intent(RegistroActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish(); // Vuelve al login
         });
     }
 }

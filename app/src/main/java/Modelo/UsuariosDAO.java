@@ -1,6 +1,5 @@
 package Modelo;
 
-import android.content.Context;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,10 +7,7 @@ import java.sql.SQLException;
 
 public class UsuariosDAO {
 
-    private Context context;
-
-    public UsuariosDAO(Context context) {
-        this.context = context;
+    public UsuariosDAO() {
     }
 
     /**

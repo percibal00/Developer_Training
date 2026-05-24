@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // 1. Inicializar el Controlador
-        usuarioControlador = new UsuarioControlador(this);
+        usuarioControlador = new UsuarioControlador();
 
         // 2. Referenciar los elementos de la vista (UI)
         etEmail = findViewById(R.id.etEmail);
@@ -59,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
 
             if (email.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Por favor, rellena todos los campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!usuarioControlador.validarEmail(email)) {
+                Toast.makeText(this, "Email no válido", Toast.LENGTH_SHORT).show();
                 return;
             }
 

@@ -1,6 +1,5 @@
 package Controlador;
 
-import android.content.Context;
 import Modelo.Usuarios;
 import Modelo.UsuariosDAO;
 
@@ -8,8 +7,8 @@ public class UsuarioControlador {
 
     private UsuariosDAO usuariosDAO;
 
-    public UsuarioControlador(Context context) {
-        this.usuariosDAO = new UsuariosDAO(context);
+    public UsuarioControlador() {
+        this.usuariosDAO = new UsuariosDAO();
     }
 
     /**
@@ -22,6 +21,17 @@ public class UsuarioControlador {
         }
 
         return usuariosDAO.getUsuarioByLogin(email, password);
+    }
+
+    /**
+     * Registra un nuevo usuario.
+     * @return true si el registro fue exitoso, false en caso contrario.
+     */
+    public boolean registrarUsuario(Usuarios u) {
+        if (u == null || !validarEmail(u.getEmail()) || !validarPassword(u.getContrasena())) {
+            return false;
+        }
+        return usuariosDAO.registrarUsuario(u);
     }
 
     public boolean validarEmail(String email) {
