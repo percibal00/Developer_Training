@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.developerTraining.R;
+import com.example.developertraining.R;
 
 public class PerfilActivity extends AppCompatActivity {
     @Override

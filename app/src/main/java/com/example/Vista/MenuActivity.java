@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.developerTraining.R;
+import com.example.developertraining.R;
 
 public class MenuActivity extends AppCompatActivity {
 

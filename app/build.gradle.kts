@@ -3,17 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.developerTraining"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    namespace = "com.example.developertraining"
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.developerTraining"
+        applicationId = "com.example.developertraining"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 

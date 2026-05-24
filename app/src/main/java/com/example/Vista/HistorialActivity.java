@@ -3,7 +3,7 @@ package com.example.Vista;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.developerTraining.R;
+import com.example.developertraining.R;
 
 public class HistorialActivity extends AppCompatActivity {
     @Override
