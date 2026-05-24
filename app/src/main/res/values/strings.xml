@@ -20,4 +20,9 @@
     <string name="hint_password">Contraseña</string>
     <string name="btn_login">Iniciar Sesión</string>
     <string name="text_no_account">¿No tienes cuenta? Regístrate aquí</string>
+    <string name="title_create_account">Crear Cuenta</string>
+    <string name="hint_full_name">Nombre completo</string>
+    <string name="hint_age">Edad</string>
+    <string name="btn_register">Registrarse</string>
+    <string name="text_already_have_account">¿Ya tienes cuenta? Inicia sesión</string>
 </resources>
