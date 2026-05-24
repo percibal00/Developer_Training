@@ -32,14 +32,4 @@
         android:progressTint="@color/text_training"
         android:thumbTint="@color/text_training" />
 
-    <Button
-        android:id="@+id/btn_close_settings"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/btn_perfil"
-        android:text="@string/btn_close"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
-
 </LinearLayout>

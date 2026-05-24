@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_game"
-    tools:context=".HistorialActivity">
+    tools:context="com.example.Vista.Nivel1Activity">
 
     <!-- Top Bar -->
     <TextView
@@ -15,162 +15,153 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Developer Training"
+        android:text="Developer Training - Nivel 1"
         android:textColor="@color/text_subtitle"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/layout_points"
+    <TextView
+        android:id="@+id/tv_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/btn_game_settings"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Points: 1250"
-            android:textColor="@color/accent_blue"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/btn_game_settings"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:padding="8dp"
-        android:src="@drawable/ic_settings"
+        android:fontFamily="monospace"
+        android:text="00:45"
+        android:textColor="@color/timer_color"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/white" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Main Card -->
+    <!-- Challenge Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/card_challenge"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="24dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         app:cardBackgroundColor="@color/card_bg"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_finish"
+        app:cardCornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_app_title">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="20dp">
 
             <TextView
-                android:id="@+id/tv_challenge_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-black"
-                android:text="Lógica de Bucles"
+                android:text="Selecciona la opción que completa el código:"
                 android:textColor="@color/white"
-                android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_challenge_desc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Ordena los bloques para completar el bucle for que recorre un array."
-                android:textColor="@color/text_subtitle"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_challenge_name" />
-
-            <TextView
-                android:id="@+id/tv_timer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="monospace"
-                android:text="00:45"
-                android:textColor="@color/timer_color"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_challenge_desc" />
-
-            <!-- Question Area Placeholder -->
-            <View
-                android:id="@+id/view_question_placeholder"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="60dp"
-                android:background="#0A0F1D"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_timer" />
-
-            <LinearLayout
+                android:id="@+id/tv_code_snippet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent">
-
-                <Button
-                    android:id="@+id/btn_previous"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/btn_secondary"
-                    android:text="Anterior"
-                    android:textAllCaps="false"
-                    android:textColor="@color/accent_blue"
-                    app:backgroundTint="@null" />
-
-                <Button
-                    android:id="@+id/btn_next"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:background="@drawable/btn_purple"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
-                    android:text="Siguiente"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    app:backgroundTint="@null" />
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginTop="12dp"
+                android:background="#1A1A1A"
+                android:fontFamily="monospace"
+                android:padding="12dp"
+                android:text="public class Coche [ ??? ] Vehiculo {\n  @Override\n  public void arrancar() {\n    System.out.println(&quot;Brum brum&quot;);\n  }\n}"
+                android:textColor="@color/accent_blue"
+                android:textSize="16sp" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Footer Button -->
+    <!-- Selection Status -->
+    <TextView
+        android:id="@+id/tv_selection_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Ninguna opción seleccionada"
+        android:textColor="@color/text_subtitle"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_challenge" />
+
+    <!-- Options Container -->
+    <LinearLayout
+        android:id="@+id/layout_options"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/btn_finish"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_selection_status">
+
+        <Button
+            android:id="@+id/option1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/btn_secondary"
+            android:text="implements"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/option2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/btn_secondary"
+            android:text="extends"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/option3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/btn_secondary"
+            android:text="inherits"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/option4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/btn_secondary"
+            android:text="imports"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/option5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_secondary"
+            android:text="new"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@null" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_finish"
         android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="24dp"
+        android:layout_height="60dp"
+        android:layout_margin="20dp"
         android:background="@drawable/btn_purple"
-        android:fontFamily="sans-serif-black"
-        android:text="Finalizar"
+        android:text="Comprobar"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp"
