@@ -12,7 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.developerTraining.R;
+import com.example.developertraining.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.concurrent.ExecutorService;
