@@ -43,10 +43,6 @@ public class MenuActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Botón Ajustes
-        findViewById(R.id.btn_settings).setOnClickListener(v -> {
-            Intent intent = new Intent(MenuActivity.this, AjustesActivity.class);
-            startActivity(intent);
-        });
+
     }
 }
