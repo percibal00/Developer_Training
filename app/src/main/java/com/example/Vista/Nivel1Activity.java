@@ -38,6 +38,7 @@ public class Nivel1Activity extends AppCompatActivity {
     private List<Pregunta> listaPreguntas;
     private int indicePregunta = 0;
     private int aciertos = 0;
+    private static final int MAX_PREGUNTAS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +73,11 @@ public class Nivel1Activity extends AppCompatActivity {
                 if (listaPreguntas == null || listaPreguntas.isEmpty()) {
                     // Cargar preguntas de respaldo si falla la BD
                     listaPreguntas = new java.util.ArrayList<>();
-                    listaPreguntas.add(new Modelo.Pregunta("System.out.println(\"___\");", "Hello World", "Básico"));
-                    listaPreguntas.add(new Modelo.Pregunta("int x = ___; // Asigna 5", "5", "Variables"));
-                    listaPreguntas.add(new Modelo.Pregunta("// Este es un ___ de una línea", "comentario", "Sintaxis"));
-                    listaPreguntas.add(new Modelo.Pregunta("String nombre = \"___\";", "Juan", "Strings"));
-                    listaPreguntas.add(new Modelo.Pregunta("double pi = ___;", "3.14", "Tipos de datos"));
+                    listaPreguntas.add(new Modelo.Pregunta("for(int i=0; i<5; ___)", "i++", "Lógica"));
+                    listaPreguntas.add(new Modelo.Pregunta("int x = 10; if(x ___ 10)", "==", "Condicionales"));
+                    listaPreguntas.add(new Modelo.Pregunta("String s = ___;", "null", "Variables"));
+                    listaPreguntas.add(new Modelo.Pregunta("while(___)", "true", "Bucles"));
+                    listaPreguntas.add(new Modelo.Pregunta("void main(___ args)", "String[]", "Funciones"));
                     Toast.makeText(this, "Usando preguntas locales (Error BD)", Toast.LENGTH_SHORT).show();
                 }
                 
@@ -135,27 +136,12 @@ public class Nivel1Activity extends AppCompatActivity {
             
             rgOptions.clearCheck();
 
-            // Opciones dinámicas según la pregunta
-            List<String> opciones = new java.util.ArrayList<>();
-            opciones.add(p.getRespuesta());
-            
-            // Generar opciones falsas según el tipo de pregunta
-            if (p.getTipo().equals("Básico")) {
-                opciones.add("print"); opciones.add("echo"); opciones.add("log"); opciones.add("display");
-            } else if (p.getTipo().equals("Variables")) {
-                opciones.add("cinco"); opciones.add("five"); opciones.add("0.5"); opciones.add("x");
-            } else if (p.getTipo().equals("Sintaxis")) {
-                opciones.add("código"); opciones.add("texto"); opciones.add("valor"); opciones.add("error");
-            } else {
-                opciones.add("opción A"); opciones.add("opción B"); opciones.add("opción C"); opciones.add("opción D");
-            }
-            
-            java.util.Collections.shuffle(opciones);
-            rb1.setText(opciones.get(0));
-            rb2.setText(opciones.get(1));
-            rb3.setText(opciones.get(2));
-            rb4.setText(opciones.get(3));
-            rb5.setText(opciones.get(4));
+            // Mock de opciones para asegurar 5 opciones
+            rb1.setText(p.getRespuesta());
+            rb2.setText("null");
+            rb3.setText("error");
+            rb4.setText("undefined");
+            rb5.setText("void");
         }
     }
 

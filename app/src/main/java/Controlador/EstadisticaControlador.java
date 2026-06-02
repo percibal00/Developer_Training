@@ -1,6 +1,7 @@
 package Controlador;
 
 import android.content.Context;
+import java.util.List;
 import Modelo.Estadisticas;
 import Modelo.EstadisticasDAO;
 
@@ -17,5 +18,9 @@ public class EstadisticaControlador {
 
     public Estadisticas verEstadisticasUsuario(String idUsuario) {
         return estadisticasDAO.obtenerEstadisticas(idUsuario);
+    }
+
+    public List<Estadisticas> obtenerHistorialCompleto(String idUsuario) {
+        return estadisticasDAO.obtenerHistorialUsuario(idUsuario);
     }
 }

@@ -1,13 +1,15 @@
 package com.example.Vista;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.developertraining.R;
+
+import java.util.List;
 
 import Controlador.EstadisticaControlador;
 import Modelo.Estadisticas;
@@ -35,60 +37,72 @@ public class PerfilActivity extends AppCompatActivity {
         // 3. Inicializar controlador
         estadisticaControlador = new EstadisticaControlador(this);
 
-        // 4. Cargar Historial/Estadísticas
-        cargarEstadisticas();
+        // 4. Cargar Historial completo
+        cargarHistorial();
 
         // Botón para volver al menú
         btnVolverMenu.setOnClickListener(v -> finish());
     }
 
-    private void cargarEstadisticas() {
-        // Limpiar historial previo antes de cargar
-        layoutHistorialItems.removeAllViews();
-
+    private void cargarHistorial() {
         if (idUsuario == -1) {
             mostrarSinDatos();
             return;
         }
 
         new Thread(() -> {
-            Estadisticas stats = estadisticaControlador.verEstadisticasUsuario(String.valueOf(idUsuario));
+            // Obtenemos la lista de todas las partidas
+            List<Estadisticas> historial = estadisticaControlador.obtenerHistorialCompleto(String.valueOf(idUsuario));
+            
             runOnUiThread(() -> {
-                // Si no hay estadísticas o los niveles están vacíos, mostramos "Sin datos"
-                if (stats == null || stats.getNivelesCompletados() == null || stats.getNivelesCompletados().isEmpty()) {
+                if (historial == null || historial.isEmpty()) {
                     mostrarSinDatos();
                 } else {
-                    actualizarUI(stats);
+                    actualizarUI(historial);
                 }
             });
         }).start();
     }
 
     private void mostrarSinDatos() {
-        tvDatosHistorial.setText("No hay partidas realizadas todavía.\n¡Empieza a jugar para ver tu progreso!");
+        tvDatosHistorial.setText("No hay partidas realizadas todavía.");
         layoutHistorialItems.removeAllViews();
         
         TextView tvVacio = new TextView(this);
-        tvVacio.setText("Tu historial está vacío.");
-        tvVacio.setTextColor(getResources().getColor(R.color.text_subtitle, getTheme()));
-        tvVacio.setTextSize(14);
+        tvVacio.setText("El historial está vacío.");
+        tvVacio.setTextColor(Color.GRAY);
         tvVacio.setPadding(0, 20, 0, 0);
         layoutHistorialItems.addView(tvVacio);
     }
 
-    private void actualizarUI(Estadisticas stats) {
-        String info = "Niveles completados: " + stats.getNivelesCompletados() + 
-                     "\nRachas: " + stats.getRachas() + 
-                     "\nTiempo total: " + stats.getTiempoTotalJuego() + "s" +
-                     "\nÚltimo nivel: " + stats.getUltimoNivelJugado();
-        tvDatosHistorial.setText(info);
-        
-        // Si hay stats, podemos limpiar el historial hardcoded o mostrar algo real
+    private void actualizarUI(List<Estadisticas> historial) {
+        // Limpiar contenedor
         layoutHistorialItems.removeAllViews();
-        TextView tvItem = new TextView(this);
-        tvItem.setText("● Nivel completado: " + stats.getUltimoNivelJugado());
-        tvItem.setTextColor(getResources().getColor(R.color.victory_green, getTheme()));
-        tvItem.setPadding(0, 10, 0, 10);
-        layoutHistorialItems.addView(tvItem);
+
+        // Mostrar resumen basado en la partida más reciente
+        Estadisticas ultima = historial.get(0);
+        String info = "Niveles superados: " + historial.size() + 
+                     "\nÚltimo nivel: " + ultima.getUltimoNivelJugado() +
+                     "\nTiempo última partida: " + ultima.getTiempoTotalJuego() + "s";
+        tvDatosHistorial.setText(info);
+
+        // Llenar el historial con todas las partidas
+        for (Estadisticas entry : historial) {
+            TextView tvItem = new TextView(this);
+            String resultado = entry.getNivelesCompletados(); // Contiene "Nivel 1" o "Nivel 1 (Fallido)"
+            
+            tvItem.setText("● " + resultado + " - Tiempo: " + entry.getTiempoTotalJuego() + "s");
+            
+            // Color según si fue exitoso o fallido
+            if (resultado.contains("Fallido")) {
+                tvItem.setTextColor(Color.parseColor("#F44336")); // Rojo
+            } else {
+                tvItem.setTextColor(Color.parseColor("#4CAF50")); // Verde
+            }
+            
+            tvItem.setPadding(0, 10, 0, 10);
+            tvItem.setTextSize(14);
+            layoutHistorialItems.addView(tvItem);
+        }
     }
 }
