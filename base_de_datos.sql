@@ -1,4 +1,4 @@
-@
+
 CREATE DATABASE IF NOT EXISTS developer_training_db;
 USE developer_training_db;
 
