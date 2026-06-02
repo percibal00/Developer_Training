@@ -203,7 +203,6 @@ public class JuegoActivity extends AppCompatActivity {
         }
 
         new android.os.Handler().postDelayed(() -> {
-            startActivity(new Intent(this, MenuActivity.class));
             finish();
         }, 3000);
     }

@@ -18,9 +18,6 @@
             android:name="com.example.Vista.PerfilActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.Vista.HistorialActivity"
-            android:exported="false" />
-        <activity
             android:name="com.example.Vista.RegistroActivity"
             android:exported="false" />
         <activity

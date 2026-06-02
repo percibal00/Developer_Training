@@ -110,30 +110,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title_recent_history">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/historial_victoria"
-            android:textColor="@color/victory_green"
-            android:textSize="14sp"
-            android:paddingVertical="4dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/historial_fallida"
-            android:textColor="@color/failure_red"
-            android:textSize="14sp"
-            android:paddingVertical="4dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/historial_victoria"
-            android:textColor="@color/victory_green"
-            android:textSize="14sp"
-            android:paddingVertical="4dp"/>
-
     </LinearLayout>
 
     <!-- Botón para volver al Menú -->

@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class EstadisticasDAO {
 
@@ -16,28 +15,27 @@ public class EstadisticasDAO {
     public void guardarEstadisticas(Estadisticas e) {
         new Thread(() -> {
             Connection conn = ConexionMySQL.conectar();
-            if (conn == null) return;
+            if (conn == null) {
+                System.err.println("ERROR: No se pudo conectar a la base de datos.");
+                return;
+            }
 
-            // Eliminamos la columna FECHA_REGISTRO si no existe en tu tabla SQL
-            String sql = "INSERT INTO Estadisticas (ID_ESTADISTICAS, ID_USUARIO, NIVELES_COMPLETADOS, TIEMPO_TOTAL_JUEGO, RACHAS, ULTIMO_NIVEL_JUGADO) " +
-                         "VALUES (?, ?, ?, ?, ?, ?)";
+            // Usamos AUTO_INCREMENT: no enviamos el campo ID_ESTADISTICAS
+            String sql = "INSERT INTO Estadisticas (ID_USUARIO, NIVELES_COMPLETADOS, TIEMPO_TOTAL_JUEGO, RACHAS, ULTIMO_NIVEL_JUGADO) " +
+                         "VALUES (?, ?, ?, ?, ?)";
             
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                // Generar un ID único para la clave primaria VARCHAR(50)
-                String uniqueID = UUID.randomUUID().toString().substring(0, 45);
-                
-                ps.setString(1, uniqueID);
-                ps.setInt(2, Integer.parseInt(e.getIdUsuario()));
-                ps.setString(3, e.getNivelesCompletados());
-                ps.setInt(4, e.getTiempoTotalJuego());
-                ps.setInt(5, e.getRachas());
-                ps.setString(6, e.getUltimoNivelJugado());
+                ps.setInt(1, Integer.parseInt(e.getIdUsuario()));
+                ps.setString(2, e.getNivelesCompletados());
+                ps.setInt(3, e.getTiempoTotalJuego());
+                ps.setInt(4, e.getRachas());
+                ps.setString(5, e.getUltimoNivelJugado());
 
                 int result = ps.executeUpdate();
-                System.out.println("Partida guardada en DB: " + result);
+                System.out.println("PARTIDA GUARDADA CORRECTAMENTE. Filas: " + result);
                 
             } catch (Exception ex) {
-                System.err.println("ERROR AL GUARDAR PARTIDA: " + ex.getMessage());
+                System.err.println("ERROR SQL AL GUARDAR: " + ex.getMessage());
                 ex.printStackTrace();
             } finally {
                 try { if (conn != null) conn.close(); } catch (SQLException ex) { ex.printStackTrace(); }
@@ -53,8 +51,7 @@ public class EstadisticasDAO {
         Connection conn = ConexionMySQL.conectar();
         if (conn == null) return historial;
 
-        // Quitamos el ORDER BY FECHA_REGISTRO porque esa columna no existe en tu tabla Estadisticas
-        String sql = "SELECT * FROM Estadisticas WHERE ID_USUARIO = ?";
+        String sql = "SELECT * FROM Estadisticas WHERE ID_USUARIO = ? ORDER BY ID_ESTADISTICAS DESC";
         
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, Integer.parseInt(idUsuario));
@@ -82,8 +79,7 @@ public class EstadisticasDAO {
     public Estadisticas obtenerEstadisticas(String idUsuario) {
         List<Estadisticas> lista = obtenerHistorialUsuario(idUsuario);
         if (!lista.isEmpty()) {
-            // Devolvemos la última (que en la lista es la última añadida)
-            return lista.get(lista.size() - 1);
+            return lista.get(0); // Al estar ordenado por ID DESC, la 0 es la más reciente
         }
         return null;
     }

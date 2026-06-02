@@ -16,10 +16,11 @@ import Modelo.Estadisticas;
 
 public class PerfilActivity extends AppCompatActivity {
 
-    private TextView tvDatosHistorial;
+    private TextView tvDatosHistorial, tvWelcome;
     private LinearLayout layoutHistorialItems;
     private EstadisticaControlador estadisticaControlador;
     private int idUsuario;
+    private String nombreUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +28,23 @@ public class PerfilActivity extends AppCompatActivity {
         setContentView(R.layout.perfil);
 
         // 1. Inicializar vistas
+        tvWelcome = findViewById(R.id.tv_welcome);
         tvDatosHistorial = findViewById(R.id.tv_datos_historial);
         layoutHistorialItems = findViewById(R.id.layout_historial_items);
         Button btnVolverMenu = findViewById(R.id.btn_volver_menu);
 
         // 2. Obtener datos del Intent
         idUsuario = getIntent().getIntExtra("ID_USUARIO", -1);
+        nombreUsuario = getIntent().getStringExtra("NOMBRE_USUARIO");
+
+        // Mostrar nombre si lo tenemos
+        if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
+            tvWelcome.setText("Perfil de " + nombreUsuario);
+        }
+
+        // Limpiar placeholders iniciales
+        tvDatosHistorial.setText("Cargando estadísticas...");
+        layoutHistorialItems.removeAllViews();
 
         // 3. Inicializar controlador
         estadisticaControlador = new EstadisticaControlador(this);
@@ -79,21 +91,30 @@ public class PerfilActivity extends AppCompatActivity {
         // Limpiar contenedor
         layoutHistorialItems.removeAllViews();
 
-        // Mostrar resumen basado en la partida más reciente
+        // Al haber añadido ORDER BY DESC en el DAO, la posición 0 es la más reciente
         Estadisticas ultima = historial.get(0);
-        String info = "Niveles superados: " + historial.size() + 
-                     "\nÚltimo nivel: " + ultima.getUltimoNivelJugado() +
-                     "\nTiempo última partida: " + ultima.getTiempoTotalJuego() + "s";
+        
+        int victorias = 0;
+        for(Estadisticas e : historial) {
+            if (e.getNivelesCompletados().contains("Superado")) victorias++;
+        }
+
+        String info = "Entrenamientos realizados: " + historial.size() + 
+                     "\nÉxitos: " + victorias +
+                     "\nÚltima sesión: " + (ultima.getNivelesCompletados().contains("Superado") ? "Éxito" : "Fallo") +
+                     "\nTiempo: " + ultima.getTiempoTotalJuego() + "s";
         tvDatosHistorial.setText(info);
 
-        // Llenar el historial con todas las partidas
+        // Llenar el historial (mostramos los últimos 3 para no saturar)
+        int count = 0;
         for (Estadisticas entry : historial) {
+            if (count >= 3) break;
+
             TextView tvItem = new TextView(this);
-            String resultado = entry.getNivelesCompletados(); // Contiene "Nivel 1" o "Nivel 1 (Fallido)"
+            String resultado = entry.getNivelesCompletados();
             
-            tvItem.setText("● " + resultado + " - Tiempo: " + entry.getTiempoTotalJuego() + "s");
+            tvItem.setText("● " + resultado + " (" + entry.getTiempoTotalJuego() + "s)");
             
-            // Color según si fue exitoso o fallido
             if (resultado.contains("Fallido")) {
                 tvItem.setTextColor(Color.parseColor("#F44336")); // Rojo
             } else {
@@ -103,6 +124,7 @@ public class PerfilActivity extends AppCompatActivity {
             tvItem.setPadding(0, 10, 0, 10);
             tvItem.setTextSize(14);
             layoutHistorialItems.addView(tvItem);
+            count++;
         }
     }
 }
