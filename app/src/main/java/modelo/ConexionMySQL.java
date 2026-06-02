@@ -17,11 +17,18 @@ public class ConexionMySQL {
         Connection conn = null;
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            // Intentar con el driver más moderno primero
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                Class.forName("com.mysql.jdbc.Driver");
+            }
 
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Conexión establecida correctamente.");
 
         } catch (Exception e) {
+            System.err.println("Error de conexión: " + e.getMessage());
             e.printStackTrace();
         }
 
