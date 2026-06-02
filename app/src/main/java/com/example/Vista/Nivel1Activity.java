@@ -192,8 +192,7 @@ public class Nivel1Activity extends AppCompatActivity {
             btnFinish.setText("Siguiente Nivel");
             btnFinish.setVisibility(View.VISIBLE);
             rgOptions.setEnabled(false);
-            Toast.makeText(this, "¡Nivel 1 superado! Pulsa el botón para continuar.", Toast.LENGTH_LONG).show();
-            
+
             btnFinish.setOnClickListener(v -> {
                 Intent intent = new Intent(this, Nivel2Activity.class);
                 intent.putExtra("ID_USUARIO", idUsuario);
@@ -201,7 +200,7 @@ public class Nivel1Activity extends AppCompatActivity {
                 finish();
             });
         } else {
-            Toast.makeText(this, "Nivel 1 fallido. Volviendo al menú...", Toast.LENGTH_LONG).show();
+
             new android.os.Handler().postDelayed(() -> {
                 startActivity(new Intent(this, MenuActivity.class));
                 finish();

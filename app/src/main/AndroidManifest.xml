@@ -24,22 +24,10 @@
             android:name="com.example.Vista.RegistroActivity"
             android:exported="false" />
         <activity
+            android:name="com.example.Vista.JuegoActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.Vista.MenuActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.example.Vista.Nivel1Activity"
-            android:exported="false" />
-        <activity
-            android:name="com.example.Vista.Nivel2Activity"
-            android:exported="false" />
-        <activity
-            android:name="com.example.Vista.Nivel3Activity"
-            android:exported="false" />
-        <activity
-            android:name="com.example.Vista.Nivel4Activity"
-            android:exported="false" />
-        <activity
-            android:name="com.example.Vista.Nivel5Activity"
             android:exported="false" />
         <activity
             android:name="com.example.Vista.MainActivity"

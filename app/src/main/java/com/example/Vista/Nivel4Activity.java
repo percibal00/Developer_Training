@@ -173,9 +173,7 @@ public class Nivel4Activity extends AppCompatActivity {
         if (aprobado) {
             btnNextLevel.setVisibility(View.VISIBLE);
             rgOptions.setEnabled(false);
-            Toast.makeText(this, "¡Nivel 4 superado! Haz clic en el botón para avanzar.", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "Nivel 4 fallido. Volviendo al menú...", Toast.LENGTH_LONG).show();
             new android.os.Handler().postDelayed(() -> {
                 startActivity(new Intent(this, MenuActivity.class));
                 finish();

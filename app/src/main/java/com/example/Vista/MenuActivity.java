@@ -33,7 +33,7 @@ public class MenuActivity extends AppCompatActivity {
 
         // Botón Jugar
         findViewById(R.id.button2).setOnClickListener(v -> {
-            Intent intent = new Intent(MenuActivity.this, Nivel1Activity.class);
+            Intent intent = new Intent(MenuActivity.this, JuegoActivity.class);
             intent.putExtra("ID_USUARIO", idUsuario);
             startActivity(intent);
         });

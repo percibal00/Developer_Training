@@ -171,9 +171,7 @@ public class Nivel5Activity extends AppCompatActivity {
             btnNextLevel.setText("Finalizar Entrenamiento");
             btnNextLevel.setVisibility(View.VISIBLE);
             rgOptions.setEnabled(false);
-            Toast.makeText(this, "¡Entrenamiento completado!", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "Nivel 5 fallido. Volviendo al menú...", Toast.LENGTH_LONG).show();
             new android.os.Handler().postDelayed(() -> {
                 startActivity(new Intent(this, MenuActivity.class));
                 finish();
