@@ -38,7 +38,7 @@ public class Nivel1Activity extends AppCompatActivity {
     private List<Pregunta> listaPreguntas;
     private int indicePregunta = 0;
     private int aciertos = 0;
-    private static final int MAX_PREGUNTAS = 1;
+    private boolean isFinishingGame = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,6 @@ public class Nivel1Activity extends AppCompatActivity {
         tvChallengeDesc = findViewById(R.id.tv_challenge_desc);
         tvCodeSnippet = findViewById(R.id.tv_code_snippet);
         rgOptions = findViewById(R.id.rg_options);
-        rgOptions.setEnabled(false); // Deshabilitar hasta que carguen las preguntas
         rb1 = findViewById(R.id.rb_option1);
         rb2 = findViewById(R.id.rb_option2);
         rb3 = findViewById(R.id.rb_option3);
@@ -66,24 +65,13 @@ public class Nivel1Activity extends AppCompatActivity {
         rb5 = findViewById(R.id.rb_option5);
         btnFinish = findViewById(R.id.btn_finish);
 
-        // 3. Cargar preguntas reales desde MySQL
+        // 3. Cargar preguntas
         new Thread(() -> {
             listaPreguntas = preguntaControlador.obtenerPreguntas();
             runOnUiThread(() -> {
-                if (listaPreguntas == null || listaPreguntas.isEmpty()) {
-                    // Cargar preguntas de respaldo si falla la BD
-                    listaPreguntas = new java.util.ArrayList<>();
-                    listaPreguntas.add(new Modelo.Pregunta("for(int i=0; i<5; ___)", "i++", "Lógica"));
-                    listaPreguntas.add(new Modelo.Pregunta("int x = 10; if(x ___ 10)", "==", "Condicionales"));
-                    listaPreguntas.add(new Modelo.Pregunta("String s = ___;", "null", "Variables"));
-                    listaPreguntas.add(new Modelo.Pregunta("while(___)", "true", "Bucles"));
-                    listaPreguntas.add(new Modelo.Pregunta("void main(___ args)", "String[]", "Funciones"));
-                    Toast.makeText(this, "Usando preguntas locales (Error BD)", Toast.LENGTH_SHORT).show();
+                if (listaPreguntas != null && !listaPreguntas.isEmpty()) {
+                    mostrarPregunta();
                 }
-                
-                java.util.Collections.shuffle(listaPreguntas);
-                rgOptions.setEnabled(true);
-                mostrarPregunta();
             });
         }).start();
 
@@ -97,51 +85,44 @@ public class Nivel1Activity extends AppCompatActivity {
             }
         });
 
-        btnFinish.setOnClickListener(v -> {
-            finishGame();
-        });
+        btnFinish.setOnClickListener(v -> finishGame());
     }
 
     private void verificarRespuesta(int checkedId) {
         if (listaPreguntas == null || indicePregunta >= listaPreguntas.size()) return;
 
         RadioButton selectedRb = findViewById(checkedId);
-        if (selectedRb == null) return;
-        
         String respuestaSeleccionada = selectedRb.getText().toString();
         Pregunta p = listaPreguntas.get(indicePregunta);
 
         if (respuestaSeleccionada.contains(p.getRespuesta())) {
             aciertos = 1;
+            Toast.makeText(this, "¡Respuesta Correcta!", Toast.LENGTH_SHORT).show();
         } else {
             aciertos = 0;
+            Toast.makeText(this, "Respuesta Incorrecta", Toast.LENGTH_SHORT).show();
         }
 
         // Bloquear opciones tras responder
-        rgOptions.setEnabled(false);
         for (int i = 0; i < rgOptions.getChildCount(); i++) {
             rgOptions.getChildAt(i).setEnabled(false);
         }
 
-        // Finalizar lógica de la pregunta única
-        new android.os.Handler().postDelayed(this::finishGame, 500);
+        // Pequeño delay antes de cerrar automáticamente o permitir finalizar
+        new android.os.Handler().postDelayed(this::finishGame, 1000);
     }
 
     private void mostrarPregunta() {
         if (listaPreguntas != null && !listaPreguntas.isEmpty()) {
             Pregunta p = listaPreguntas.get(indicePregunta);
             tvChallengeName.setText(p.getTipo());
-            tvChallengeDesc.setText("Completa el código:");
             tvCodeSnippet.setText(p.getPregunta());
             
-            rgOptions.clearCheck();
-
-            // Mock de opciones para asegurar 5 opciones
             rb1.setText(p.getRespuesta());
-            rb2.setText("null");
-            rb3.setText("error");
-            rb4.setText("undefined");
-            rb5.setText("void");
+            rb2.setText("Opcion B (Falsa)");
+            rb3.setText("Opcion C (Falsa)");
+            rb4.setText("Opcion D (Falsa)");
+            rb5.setText("Opcion E (Falsa)");
         }
     }
 
@@ -155,7 +136,6 @@ public class Nivel1Activity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                tvTimer.setText("00:00");
                 finishGame();
             }
         }.start();
@@ -163,11 +143,8 @@ public class Nivel1Activity extends AppCompatActivity {
 
     private void updateCountDownText() {
         int seconds = (int) (timeLeftInMillis / 1000) % 60;
-        String timeLeftFormatted = String.format(Locale.getDefault(), "00:%02d", seconds);
-        tvTimer.setText(timeLeftFormatted);
+        tvTimer.setText(String.format(Locale.getDefault(), "00:%02d", seconds));
     }
-
-    private boolean isFinishingGame = false;
 
     private void finishGame() {
         if (isFinishingGame) return;
@@ -177,35 +154,24 @@ public class Nivel1Activity extends AppCompatActivity {
             countDownTimer.cancel();
         }
 
-        boolean aprobado = aciertos >= 1;
         if (idUsuario != -1) {
             Estadisticas stats = new Estadisticas();
             stats.setIdUsuario(String.valueOf(idUsuario));
-            stats.setNivelesCompletados(aprobado ? "Nivel 1" : "Nivel 1 (Fallido)");
+            stats.setNivelesCompletados(aciertos > 0 ? "Nivel 1 Superado" : "Nivel 1 Fallido");
             stats.setUltimoNivelJugado("Nivel 1");
-            stats.setRachas(aprobado ? 1 : 0);
-            new Thread(() -> estadisticaControlador.actualizarProgreso(stats)).start();
-        }
-
-        if (aprobado) {
-            // Mostrar botón para pasar al siguiente nivel
-            btnFinish.setText("Siguiente Nivel");
-            btnFinish.setVisibility(View.VISIBLE);
-            rgOptions.setEnabled(false);
-            Toast.makeText(this, "¡Nivel 1 superado! Pulsa el botón para continuar.", Toast.LENGTH_LONG).show();
+            stats.setRachas(aciertos);
+            stats.setTiempoTotalJuego((int) (45000 - timeLeftInMillis) / 1000);
             
-            btnFinish.setOnClickListener(v -> {
-                Intent intent = new Intent(this, Nivel2Activity.class);
-                intent.putExtra("ID_USUARIO", idUsuario);
-                startActivity(intent);
-                finish();
-            });
+            // Guardar en MySQL
+            new Thread(() -> {
+                estadisticaControlador.actualizarProgreso(stats);
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Progreso guardado en historial", Toast.LENGTH_SHORT).show();
+                    finish();
+                });
+            }).start();
         } else {
-            Toast.makeText(this, "Nivel 1 fallido. Volviendo al menú...", Toast.LENGTH_LONG).show();
-            new android.os.Handler().postDelayed(() -> {
-                startActivity(new Intent(this, MenuActivity.class));
-                finish();
-            }, 2000);
+            finish();
         }
     }
 
