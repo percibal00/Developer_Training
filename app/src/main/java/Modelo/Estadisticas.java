@@ -2,23 +2,12 @@ package Modelo;
 
 public class Estadisticas {
 
-    //Atributos
-    private String idEstadisticas;
+    // Atributos (Eliminado idEstadisticas)
     private String idUsuario;
     private String nivelesCompletados;
     private int tiempoTotalJuego;
-    private int rachas;
-    private String ultimoNivelJugado;
 
-    //getters y setters
-    public String getIdEstadisticas() {
-        return idEstadisticas;
-    }
-
-    public void setIdEstadisticas(String idEstadisticas) {
-        this.idEstadisticas = idEstadisticas;
-    }
-
+    // Getters y setters
     public String getIdUsuario() {
         return idUsuario;
     }
@@ -43,32 +32,12 @@ public class Estadisticas {
         this.tiempoTotalJuego = tiempoTotalJuego;
     }
 
-    public int getRachas() {
-        return rachas;
-    }
-
-    public void setRachas(int rachas) {
-        this.rachas = rachas;
-    }
-
-    public String getUltimoNivelJugado() {
-        return ultimoNivelJugado;
-    }
-
-    public void setUltimoNivelJugado(String ultimoNivelJugado) {
-        this.ultimoNivelJugado = ultimoNivelJugado;
-    }
-
-    //toString
     @Override
     public String toString() {
         return "Estadisticas{" +
-                "idEstadisticas='" + idEstadisticas + '\'' +
-                ", idUsuario='" + idUsuario + '\'' +
+                "idUsuario='" + idUsuario + '\'' +
                 ", nivelesCompletados='" + nivelesCompletados + '\'' +
                 ", tiempoTotalJuego=" + tiempoTotalJuego +
-                ", rachas=" + rachas +
-                ", ultimoNivelJugado='" + ultimoNivelJugado + '\'' +
                 '}';
     }
 }

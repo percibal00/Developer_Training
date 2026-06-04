@@ -2,19 +2,15 @@ package Modelo;
 
 public class Usuarios {
 
-    //Atributos
     private int idUsuario;
     private String nombre;
     private String email;
     private String contrasena;
     private int edad;
-    private String fechaRegistro;
 
-    //Constructor
     public Usuarios() {
     }
 
-    //getters y setters
     public int getIdUsuario() {
         return idUsuario;
     }
@@ -55,15 +51,6 @@ public class Usuarios {
         this.edad = edad;
     }
 
-    public String getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(String fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    //toString
     @Override
     public String toString() {
         return "Usuarios{" +
@@ -72,7 +59,6 @@ public class Usuarios {
                 ", email='" + email + '\'' +
                 ", contrasena='" + contrasena + '\'' +
                 ", edad=" + edad +
-                ", fechaRegistro='" + fechaRegistro + '\'' +
                 '}';
     }
 }

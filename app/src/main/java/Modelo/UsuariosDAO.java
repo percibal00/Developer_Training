@@ -10,9 +10,6 @@ public class UsuariosDAO {
     public UsuariosDAO() {
     }
 
-    /**
-     * Busca un usuario en la base de datos MySQL por email y contraseña.
-     */
     public Usuarios getUsuarioByLogin(String email, String password) {
         Usuarios usuario = null;
         Connection conn = ConexionMySQL.conectar();
@@ -30,24 +27,16 @@ public class UsuariosDAO {
                     usuario.setNombre(rs.getString("NOMBRE"));
                     usuario.setEmail(rs.getString("EMAIL"));
                     usuario.setEdad(rs.getInt("EDAD"));
-                    usuario.setFechaRegistro(rs.getString("FECHA_REGISTRO"));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            try { if (conn != null) conn.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
         return usuario;
     }
 
-    /**
-     * Registra un nuevo usuario en la base de datos MySQL.
-     */
     public boolean registrarUsuario(Usuarios u) {
         Connection conn = ConexionMySQL.conectar();
         if (conn == null) return false;
@@ -61,16 +50,11 @@ public class UsuariosDAO {
 
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas > 0;
-
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         } finally {
-            try {
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            try { if (conn != null) conn.close(); } catch (SQLException e) { e.printStackTrace(); }
         }
     }
 }

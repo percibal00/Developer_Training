@@ -1,9 +1,5 @@
 <resources>
     <string name="app_name">Developer_Training</string>
-    <string name="pantalla_historial">Pantalla de Historial</string>
-    <string name="hint_editar_perfil">Editar perfil&#8230;</string>
-    <string name="text_datos_usuario">Datos de usuario</string>
-    <string name="btn_historial">Ver Historial Completo</string>
     <string name="btn_volver_menu">Volver al Menú</string>
     <string name="txt_developer">Developer</string>
     <string name="txt_training">Training</string>
@@ -12,13 +8,8 @@
     <string name="btn_perfil">Perfil</string>
     <string name="welcome_profile">Bienvenido a tu perfil programador</string>
     <string name="title_progreso">Tu progreso</string>
-    <string name="progreso_ejemplo">Partidas ganadas: 15\nNivel actual: Senior\nLenguaje favorito: Java</string>
     <string name="title_recent_history">Historial Reciente</string>
-    <string name="historial_victoria">● Partida Victoria</string>
-    <string name="historial_fallida">● Partida Fallida</string>
     <string name="title_settings">Ajustes de Sonido</string>
-    <string name="label_volume">Volumen de Voz</string>
-    <string name="btn_close">Cerrar</string>
     <string name="hint_email">Correo electrónico</string>
     <string name="hint_password">Contraseña</string>
     <string name="btn_login">Iniciar Sesión</string>

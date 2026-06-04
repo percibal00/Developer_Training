@@ -1,9 +1,7 @@
 package com.example.Vista;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import Controlador.PreguntaControlador;
 import Controlador.EstadisticaControlador;
 import Modelo.Pregunta;
 import Modelo.Estadisticas;
@@ -28,10 +25,9 @@ public class JuegoActivity extends AppCompatActivity {
 
     private TextView tvTimer, tvChallengeName, tvChallengeDesc, tvCodeSnippet;
     private RadioGroup rgOptions;
-    private RadioButton[] rbOptions = new RadioButton[5];
+    private final RadioButton[] rbOptions = new RadioButton[5];
     private Button btnNext;
     
-    private PreguntaControlador preguntaControlador;
     private EstadisticaControlador estadisticaControlador;
     
     private int idUsuario;
@@ -44,10 +40,9 @@ public class JuegoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.nivel1); // Reutilizamos el layout que ya tiene los elementos
+        setContentView(R.layout.nivel1);
 
         idUsuario = getIntent().getIntExtra("ID_USUARIO", -1);
-        preguntaControlador = new PreguntaControlador(this);
         estadisticaControlador = new EstadisticaControlador(this);
 
         tvTimer = findViewById(R.id.tv_timer);
@@ -60,46 +55,24 @@ public class JuegoActivity extends AppCompatActivity {
         rbOptions[2] = findViewById(R.id.rb_option3);
         rbOptions[3] = findViewById(R.id.rb_option4);
         rbOptions[4] = findViewById(R.id.rb_option5);
-        btnNext = findViewById(R.id.btn_finish); // Usamos el botón de abajo como "Siguiente"
+        btnNext = findViewById(R.id.btn_finish);
 
         btnNext.setText("Siguiente");
-
         cargarPreguntas();
-
-        btnNext.setOnClickListener(v -> {
-            procesarRespuesta();
-        });
+        btnNext.setOnClickListener(v -> procesarRespuesta());
     }
 
     private void cargarPreguntas() {
-        new Thread(() -> {
-            List<Pregunta> todas = preguntaControlador.obtenerPreguntas();
-            if (todas == null || todas.isEmpty()) {
-                todas = obtenerPreguntasFallback();
-            }
-            
-            // Seleccionar 5 preguntas (una de cada tipo si es posible, o aleatorias)
-            Collections.shuffle(todas);
-            listaPreguntas = new ArrayList<>();
-            for (int i = 0; i < Math.min(5, todas.size()); i++) {
-                listaPreguntas.add(todas.get(i));
-            }
-
-            runOnUiThread(() -> {
-                mostrarPregunta();
-                startTimer();
-            });
-        }).start();
-    }
-
-    private List<Pregunta> obtenerPreguntasFallback() {
-        List<Pregunta> fallback = new ArrayList<>();
-        fallback.add(new Pregunta("System.out.println(\"___\");", "Hello World", "Básico"));
-        fallback.add(new Pregunta("if (x > 0) { ___ }", "x++", "Condicionales"));
-        fallback.add(new Pregunta("for (int i=0; i<5; ___)", "i++", "Bucles"));
-        fallback.add(new Pregunta("int[] nums = {1, 2, ___};", "3", "Arrays"));
-        fallback.add(new Pregunta("public class ___ { }", "Main", "POO"));
-        return fallback;
+        listaPreguntas = new ArrayList<>();
+        listaPreguntas.add(new Pregunta("System.out.println(\"___\");", "Hello World", "Básico"));
+        listaPreguntas.add(new Pregunta("if (x > 0) { ___ }", "x++", "Condicionales"));
+        listaPreguntas.add(new Pregunta("for (int i=0; i<5; ___)", "i++", "Bucles"));
+        listaPreguntas.add(new Pregunta("int[] nums = {1, 2, ___};", "3", "Arrays"));
+        listaPreguntas.add(new Pregunta("public class ___ { }", "Main", "POO"));
+        
+        Collections.shuffle(listaPreguntas);
+        mostrarPregunta();
+        startTimer();
     }
 
     private void mostrarPregunta() {
@@ -109,7 +82,7 @@ public class JuegoActivity extends AppCompatActivity {
         }
 
         Pregunta p = listaPreguntas.get(indicePregunta);
-        tvChallengeName.setText("Nivel " + (indicePregunta + 1));
+        tvChallengeName.setText(String.format(Locale.getDefault(), "Nivel %d", indicePregunta + 1));
         tvChallengeDesc.setText(p.getTipo());
         tvCodeSnippet.setText(p.getPregunta());
         rgOptions.clearCheck();
@@ -117,9 +90,7 @@ public class JuegoActivity extends AppCompatActivity {
         List<String> opciones = generarOpciones(p);
         for (int i = 0; i < 5; i++) {
             rbOptions[i].setText(opciones.get(i));
-            rbOptions[i].setEnabled(true);
         }
-        rgOptions.setEnabled(true);
         
         if (indicePregunta == listaPreguntas.size() - 1) {
             btnNext.setText("Finalizar");
@@ -129,7 +100,6 @@ public class JuegoActivity extends AppCompatActivity {
     private List<String> generarOpciones(Pregunta p) {
         List<String> ops = new ArrayList<>();
         ops.add(p.getRespuesta());
-        // Agregar opciones falsas genéricas según el tipo
         switch (p.getTipo()) {
             case "Básico": ops.add("print"); ops.add("echo"); ops.add("log"); ops.add("display"); break;
             case "Condicionales": ops.add("break"); ops.add("return"); ops.add("continue"); ops.add("exit"); break;
@@ -150,10 +120,7 @@ public class JuegoActivity extends AppCompatActivity {
         }
 
         RadioButton rb = findViewById(selectedId);
-        String seleccion = rb.getText().toString();
-        Pregunta p = listaPreguntas.get(indicePregunta);
-
-        if (seleccion.equals(p.getRespuesta())) {
+        if (rb.getText().toString().equals(listaPreguntas.get(indicePregunta).getRespuesta())) {
             aciertosTotal++;
         }
 
@@ -175,35 +142,23 @@ public class JuegoActivity extends AppCompatActivity {
                 tvTimer.setText(String.format(Locale.getDefault(), "00:%02d", seconds));
             }
             @Override
-            public void onFinish() {
-                finalizarJuego();
-            }
+            public void onFinish() { finalizarJuego(); }
         }.start();
     }
 
     private void finalizarJuego() {
         if (countDownTimer != null) countDownTimer.cancel();
-        
         boolean aprobado = aciertosTotal >= 3;
         
         if (idUsuario != -1) {
             Estadisticas stats = new Estadisticas();
             stats.setIdUsuario(String.valueOf(idUsuario));
             stats.setNivelesCompletados(aprobado ? "Entrenamiento Superado" : "Entrenamiento Fallido");
-            stats.setUltimoNivelJugado("Nivel 5");
-            stats.setRachas(aprobado ? 1 : 0);
             stats.setTiempoTotalJuego((int)((45000 - timeLeftInMillis)/1000));
             new Thread(() -> estadisticaControlador.actualizarProgreso(stats)).start();
         }
 
-        if (aprobado) {
-            Toast.makeText(this, "¡Felicidades! Acertaste " + aciertosTotal + "/5", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "Sigue practicando. Acertaste " + aciertosTotal + "/5", Toast.LENGTH_LONG).show();
-        }
-
-        new android.os.Handler().postDelayed(() -> {
-            finish();
-        }, 3000);
+        Toast.makeText(this, (aprobado ? "¡Felicidades!" : "Sigue practicando.") + " Acertaste " + aciertosTotal + "/5", Toast.LENGTH_LONG).show();
+        new android.os.Handler().postDelayed(this::finish, 3000);
     }
 }
